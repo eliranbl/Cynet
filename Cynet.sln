@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynet.EF", "Cynet.EF\Cynet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynet.Common", "Cynet.Common\Cynet.Common.csproj", "{C5946591-5988-4B35-A45D-83501CD3EA1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cynet.Tests", "Cynet.Tests\Cynet.Tests.csproj", "{C623706E-56E0-4DBB-970D-80C63195B8C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C5946591-5988-4B35-A45D-83501CD3EA1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5946591-5988-4B35-A45D-83501CD3EA1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5946591-5988-4B35-A45D-83501CD3EA1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C623706E-56E0-4DBB-970D-80C63195B8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C623706E-56E0-4DBB-970D-80C63195B8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C623706E-56E0-4DBB-970D-80C63195B8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C623706E-56E0-4DBB-970D-80C63195B8C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

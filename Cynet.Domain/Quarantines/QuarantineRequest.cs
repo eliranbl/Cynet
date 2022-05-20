@@ -14,14 +14,4 @@ public class QuarantineRequest
     /// From date.
     /// </summary>
     public DateTime FromDate { get; set; }
-
-    /// <summary>
-    /// Until date.
-    /// </summary>
-    public DateTime UntilDate { get; set; }
-
-    /// <summary>
-    /// Sent message.
-    /// </summary>
-    public bool SentEmail { get; set; }
 }

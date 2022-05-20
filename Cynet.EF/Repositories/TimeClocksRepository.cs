@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Cynet.Common.Paging;
+﻿using Cynet.Common.Paging;
 using Cynet.Domain.TimeClocks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cynet.EF.Repositories;
 
@@ -13,7 +9,7 @@ namespace Cynet.EF.Repositories;
 /// </summary>
 public class TimeClocksRepository : ITimeClocksRepository
 {
-    private  readonly CynetDbContext _context;
+    private readonly CynetDbContext _context;
 
     /// <summary>
     /// Create repository.
@@ -24,19 +20,25 @@ public class TimeClocksRepository : ITimeClocksRepository
         _context = context;
     }
 
-    public Task<TimeClock> GetTimeClockAsync()
+    /// <summary>
+    /// Get time clock.
+    /// </summary>
+    /// <param name="id">Identifier.</param>
+    /// <returns>Time clock.</returns>
+    public async Task<TimeClock> GetTimeClockAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var result = await _context.TimeClocks.FindAsync(id);
+        return result;
     }
 
-    /// <summary>
-    /// Log to time clock.
-    /// </summary>
-    /// <param name="employeeId">Employee identifier.</param>
-    /// <returns>Boolean.</returns>
-    public Task<bool> LogToTimeClockAsync(int employeeId)
+    public async Task<TimeClock> AddTimeClockAsync(TimeClock timeClock)
     {
-        throw new NotImplementedException();
+        timeClock.CreateTime = DateTime.UtcNow;
+
+        var result = await _context.TimeClocks.AddAsync(timeClock);
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
     }
 
     /// <summary>
@@ -44,9 +46,22 @@ public class TimeClocksRepository : ITimeClocksRepository
     /// </summary>
     /// <param name="query">Time clock query.</param>
     /// <returns>Time clocks.</returns>
-    public Task<Page<TimeClock>> GetTimeClockLogAsync(TimeClockQuery query)
+    public async Task<Page<TimeClock>> GetTimeClockLogAsync(TimeClockQuery query)
     {
-        throw new NotImplementedException();
+        var timeClocksQueryable = _context.TimeClocks.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(query.EmployeeEmail))
+        {
+            timeClocksQueryable = timeClocksQueryable.Where(x => x.Employee.Email == query.EmployeeEmail);
+        }
+
+        if (query.Date.HasValue)
+        {
+            timeClocksQueryable = timeClocksQueryable.Where(x => x.Date == query.Date);
+        }
+
+        return await timeClocksQueryable.AsQueryable()
+            .ToPageAsync(query.PageNo, query.PageSize);
     }
 
     /// <summary>
@@ -54,8 +69,42 @@ public class TimeClocksRepository : ITimeClocksRepository
     /// </summary>
     /// <param name="timeClock">Time clock.</param>
     /// <returns>Time clock.</returns>
-    public Task<TimeClock> UpdateTimeClockAsync(TimeClock timeClock)
+    public async Task<TimeClock> UpdateTimeClockAsync(TimeClock timeClock)
     {
-        throw new NotImplementedException();
+        timeClock.UpdateTime = DateTime.UtcNow;
+
+        var result = await _context.TimeClocks.FindAsync(timeClock.Id);
+
+        await _context.SaveChangesAsync();
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get time clock.
+    /// </summary>
+    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="requestValue">Request value.</param>
+    /// <returns>Time clock.</returns>
+    public async Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue)
+    {
+        var result = await _context.TimeClocks
+            .Include(x => x.Employee)
+            .SingleOrDefaultAsync(x =>
+                x.Employee.Email == employeeEmail
+                && x.Date == requestValue.Date);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Get times clock by date.
+    /// </summary>
+    /// <param name="date">Date.</param>
+    /// <returns>Times clock.</returns>
+    public async Task<List<TimeClock>> GetAllTimesClockByDate(DateTime date)
+    {
+        return await _context.TimeClocks.Where(x => x.Date == date)
+            .Include(x => x.Employee).ToListAsync();
     }
 }

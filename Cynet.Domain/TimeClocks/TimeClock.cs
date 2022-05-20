@@ -8,6 +8,11 @@ namespace Cynet.Domain.TimeClocks;
 public class TimeClock : DomainBase
 {
     /// <summary>
+    /// Identifier.
+    /// </summary>
+    public Guid Id { get; set; }
+
+    /// <summary>
     /// Employee identifier.
     /// </summary>
     public Guid EmployeeId { get; set; }
@@ -18,11 +23,6 @@ public class TimeClock : DomainBase
     public string Day { get; set; }
 
     /// <summary>
-    /// Week.
-    /// </summary>
-    public int Week { get; set; }
-
-    /// <summary>
     /// Date.
     /// </summary>
     public DateTime Date { get; set; }
@@ -30,12 +30,12 @@ public class TimeClock : DomainBase
     /// <summary>
     /// Enter time.
     /// </summary>
-    public DateTime EnterTime { get; set; }
+    public string EnterTime { get; set; }
 
     /// <summary>
-    /// End time.
+    ///  Leave time.
     /// </summary>
-    public DateTime? EndTime { get; set; }
+    public string? LeaveTime { get; set; }
 
     /// <summary>
     /// Employee.

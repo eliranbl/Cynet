@@ -3,12 +3,12 @@
 /// <summary>
 /// Send email request.
 /// </summary>
-public class SendEmailRequest
+public class SendQuarantineEmailRequest
 {
     /// <summary>
-    /// Employee identifier.
+    /// Email.
     /// </summary>
-    public Guid EmployeeId { get; set; }
+    public string Email { get; set; }
 
     /// <summary>   
     /// From date.

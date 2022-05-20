@@ -6,17 +6,12 @@
 public class UpdateTimeClock
 {
     /// <summary>
-    /// Identifier.
-    /// </summary>
-    public Guid Id { get; set; }
-
-    /// <summary>
     /// Enter time.
     /// </summary>
-    public DateTime EnterTime { get; set; }
+    public string EnterTime { get; set; }
 
     /// <summary>
-    /// End time.
+    /// Leave time.
     /// </summary>
-    public DateTime? EndTime { get; set; }
+    public string? LeaveTime { get; set; }
 }

@@ -8,22 +8,17 @@ public class TimeClockQuery
     /// <summary>
     /// Employee identifier.
     /// </summary>
-    public int EmployeeId { get; set; }
+    public string? EmployeeEmail { get; set; }
 
     /// <summary>
     /// Day.
     /// </summary>
-    public string Day { get; set; }
-
-    /// <summary>
-    /// Week.
-    /// </summary>
-    public int Week { get; set; }
+    public string? Day { get; set; }
 
     /// <summary>
     /// Date.
     /// </summary>
-    public DateTime Date { get; set; }
+    public DateTime? Date { get; set; }
 
     /// <summary>
     /// Page number.

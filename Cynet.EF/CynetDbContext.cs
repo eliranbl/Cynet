@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Cynet.Domain.Employees;
+using Cynet.Domain.Insulations;
+using Cynet.Domain.TimeClocks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cynet.EF;
 
@@ -7,6 +10,20 @@ namespace Cynet.EF;
 /// </summary>
 public class CynetDbContext : DbContext
 {
+    /// <summary>
+    /// Quarantines.
+    /// </summary>
+    public DbSet<Quarantine> Quarantines { get; set; }
+
+    /// <summary>
+    /// TimeClocks.
+    /// </summary>
+    public DbSet<TimeClock> TimeClocks { get; set; }
+
+    /// <summary>
+    /// Employees.
+    /// </summary>
+    public DbSet<Employee> Employees { get; set; }
 
     /// <summary>
     /// Create context.

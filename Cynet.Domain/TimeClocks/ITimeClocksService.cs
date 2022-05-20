@@ -8,23 +8,47 @@ namespace Cynet.Domain.TimeClocks;
 public interface ITimeClocksService
 {
     /// <summary>
-    /// Log to time clock.
+    /// Log to time log.
     /// </summary>
     /// <param name="employeeId">Employee identifier.</param>
-    /// <returns></returns>
-    Task<bool> LogToTimeClockAsync(int employeeId);
+    /// <param name="request">Time clock request.</param>
+    /// <returns>Time clock response.</returns>
+    Task<TimeClockResponse> LogToTimeClockAsync(Guid employeeId, TimeClockRequest request);
 
     /// <summary>
     /// Get time clock log.
     /// </summary>
     /// <param name="query">Time clock query.</param>
-    /// <returns>Time clocks.</returns>
-    Task<Page<TimeClockResponse>> GetTimeClockLogAsync(TimeClockQuery query);
+    /// <returns>Time clock response.</returns>
+    Task<Page<TimeClockResponse>> GetTimeClockLogsAsync(TimeClockQuery query);
 
     /// <summary>
     /// Update time clock.
     /// </summary>
+    /// <param name="id"></param>
     /// <param name="request">Update time clock request.</param>
-    /// <returns></returns>
-    Task<TimeClockResponse> UpdateTimeClockAsync(UpdateTimeClock request);
+    /// <returns>Time clock response.</returns>
+    Task<TimeClockResponse> UpdateTimeClockAsync(Guid id, UpdateTimeClock request);
+
+    /// <summary>
+    /// Get time clock by identifier.
+    /// </summary>
+    /// <param name="id">Identifier.</param>
+    /// <returns>Time clock response.</returns>
+    Task<TimeClockResponse?> GetTimeClockByIdAsync(Guid id);
+
+    /// <summary>
+    /// Get time clock.
+    /// </summary>
+    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="requestValue">Request value.</param>
+    /// <returns>Time clock.</returns>
+    Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue);
+
+    /// <summary>
+    /// Get times clock by date.
+    /// </summary>
+    /// <param name="date">Date.</param>
+    /// <returns>Times clock.</returns>
+    Task<List<TimeClockResponse>> GetAllTimesClockByDate(DateTime date);
 }

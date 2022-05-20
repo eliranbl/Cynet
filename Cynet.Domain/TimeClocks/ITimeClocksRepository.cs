@@ -7,14 +7,19 @@ namespace Cynet.Domain.TimeClocks;
 /// </summary>
 public interface ITimeClocksRepository
 {
-    Task<TimeClock> GetTimeClockAsync();
+    /// <summary>
+    /// Get time clock.
+    /// </summary>
+    /// <param name="id">Identifier.</param>
+    /// <returns>Time clock.</returns>
+    Task<TimeClock?> GetTimeClockAsync(Guid id);
 
     /// <summary>
-    /// Log to time clock.
+    /// Add time clock.
     /// </summary>
-    /// <param name="employeeId">Employee identifier.</param>
-    /// <returns>Boolean.</returns>
-    Task<bool> LogToTimeClockAsync(int employeeId);
+    /// <param name="timeClock">Time clock.</param>
+    /// <returns></returns>
+    Task<TimeClock> AddTimeClockAsync(TimeClock timeClock);
 
     /// <summary>
     /// Get time clock log.
@@ -29,4 +34,19 @@ public interface ITimeClocksRepository
     /// <param name="timeClock">Time clock.</param>
     /// <returns>Time clock.</returns>
     Task<TimeClock> UpdateTimeClockAsync(TimeClock timeClock);
+
+    /// <summary>
+    /// Get time clock.
+    /// </summary>
+    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="requestValue">Request value.</param>
+    /// <returns>Time clock.</returns>
+    Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue);
+
+    /// <summary>
+    /// Get times clock by date.
+    /// </summary>
+    /// <param name="date">Date.</param>
+    /// <returns>Times clock.</returns>
+    Task<List<TimeClock>> GetAllTimesClockByDate(DateTime date);
 }

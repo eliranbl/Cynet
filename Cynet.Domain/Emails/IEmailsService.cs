@@ -10,5 +10,5 @@ public interface IEmailsService
     /// </summary>
     /// <param name="request">Send email request.</param>
     /// <returns>Boolean.</returns>
-    Task<bool> SendEmailAsync(SendEmailRequest request);
+    Task<bool> SendEmailAsync(SendQuarantineEmailRequest request);
 }
