@@ -28,7 +28,7 @@ public interface ITimeClocksService
     /// <param name="id"></param>
     /// <param name="request">Update time clock request.</param>
     /// <returns>Time clock response.</returns>
-    Task<TimeClockResponse> UpdateTimeClockAsync(Guid id, UpdateTimeClock request);
+    Task<TimeClockResponse> UpdateTimeClockAsync(Guid id, UpdateTimeClockRequest request);
 
     /// <summary>
     /// Get time clock by identifier.
@@ -40,10 +40,10 @@ public interface ITimeClocksService
     /// <summary>
     /// Get time clock.
     /// </summary>
-    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="Email">Employee email.</param>
     /// <param name="requestValue">Request value.</param>
     /// <returns>Time clock.</returns>
-    Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue);
+    Task<TimeClock?> GetTimeClockAsync(string Email, DateTime requestValue);
 
     /// <summary>
     /// Get times clock by date.

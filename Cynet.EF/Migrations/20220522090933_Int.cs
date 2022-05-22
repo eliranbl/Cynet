@@ -32,6 +32,7 @@ namespace Cynet.EF.Migrations
                     FromDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UntilDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SentEmail = table.Column<bool>(type: "bit", nullable: false),
+                    IsReporter = table.Column<bool>(type: "bit", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

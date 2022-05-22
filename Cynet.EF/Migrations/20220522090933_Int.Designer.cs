@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cynet.EF.Migrations
 {
     [DbContext(typeof(CynetDbContext))]
-    [Migration("20220520120016_Int")]
+    [Migration("20220522090933_Int")]
     partial class Int
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,6 +64,9 @@ namespace Cynet.EF.Migrations
 
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsReporter")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("SentEmail")
                         .HasColumnType("bit");

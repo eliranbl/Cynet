@@ -50,9 +50,9 @@ public class TimeClocksRepository : ITimeClocksRepository
     {
         var timeClocksQueryable = _context.TimeClocks.AsQueryable();
 
-        if (!string.IsNullOrWhiteSpace(query.EmployeeEmail))
+        if (!string.IsNullOrWhiteSpace(query.Email))
         {
-            timeClocksQueryable = timeClocksQueryable.Where(x => x.Employee.Email == query.EmployeeEmail);
+            timeClocksQueryable = timeClocksQueryable.Where(x => x.Employee.Email == query.Email);
         }
 
         if (query.Date.HasValue)
@@ -83,15 +83,15 @@ public class TimeClocksRepository : ITimeClocksRepository
     /// <summary>
     /// Get time clock.
     /// </summary>
-    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="email">Email.</param>
     /// <param name="requestValue">Request value.</param>
     /// <returns>Time clock.</returns>
-    public async Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue)
+    public async Task<TimeClock?> GetTimeClockAsync(string email, DateTime requestValue)
     {
         var result = await _context.TimeClocks
             .Include(x => x.Employee)
             .SingleOrDefaultAsync(x =>
-                x.Employee.Email == employeeEmail
+                x.Employee.Email == email
                 && x.Date == requestValue.Date);
 
         return result;
@@ -104,7 +104,9 @@ public class TimeClocksRepository : ITimeClocksRepository
     /// <returns>Times clock.</returns>
     public async Task<List<TimeClock>> GetAllTimesClockByDate(DateTime date)
     {
-        return await _context.TimeClocks.Where(x => x.Date == date)
-            .Include(x => x.Employee).ToListAsync();
+        return await _context.TimeClocks.Where(x => x.Date == date )
+            .Include(x => x.Employee)
+            .ThenInclude(x=>x.Quarantines)
+            .ToListAsync();
     }
 }

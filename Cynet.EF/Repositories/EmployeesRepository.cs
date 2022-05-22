@@ -23,6 +23,8 @@ public class EmployeesRepository : IEmployeesRepository
     /// <returns>Employee.</returns>
     public async Task<Employee> AddEmployeeAsync(Employee employee)
     {
+        employee.CreateTime= DateTime.UtcNow;
+        
         var result = await _context.Employees.AddAsync(employee);
         await _context.SaveChangesAsync();
         return result.Entity;

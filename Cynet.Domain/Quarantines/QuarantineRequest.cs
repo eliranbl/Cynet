@@ -1,4 +1,6 @@
-﻿namespace Cynet.Domain.Quarantines;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Cynet.Domain.Quarantines;
 
 /// <summary>
 /// Quarantine request.
@@ -6,9 +8,10 @@
 public class QuarantineRequest
 {
     /// <summary>
-    /// Employee identifier.
+    /// Email.
     /// </summary>
-    public Guid EmployeeId { get; set; }
+    [EmailAddress(ErrorMessage = "Email is not valid")]
+    public string Email{ get; set; }
 
     /// <summary>
     /// From date.

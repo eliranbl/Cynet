@@ -28,7 +28,6 @@ public class QuarantinesController : ControllerBase
     public async Task<IActionResult> DeclarePositiveAsync(QuarantineRequest request)
     {
         await _quarantinesService.DeclarePositiveAsync(request);
-
         return Ok();
     }
 }

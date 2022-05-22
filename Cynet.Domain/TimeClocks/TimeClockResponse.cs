@@ -1,4 +1,5 @@
 ﻿using Cynet.Domain.Employees;
+using Cynet.Domain.Quarantines;
 
 namespace Cynet.Domain.TimeClocks;
 

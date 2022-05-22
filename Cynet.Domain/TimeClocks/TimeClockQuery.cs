@@ -6,9 +6,9 @@
 public class TimeClockQuery
 {
     /// <summary>
-    /// Employee identifier.
+    /// Email.
     /// </summary>
-    public string? EmployeeEmail { get; set; }
+    public string? Email { get; set; }
 
     /// <summary>
     /// Day.

@@ -63,6 +63,9 @@ namespace Cynet.EF.Migrations
                     b.Property<DateTime>("FromDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsReporter")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("SentEmail")
                         .HasColumnType("bit");
 

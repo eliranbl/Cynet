@@ -38,10 +38,10 @@ public interface ITimeClocksRepository
     /// <summary>
     /// Get time clock.
     /// </summary>
-    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="email">Email.</param>
     /// <param name="requestValue">Request value.</param>
     /// <returns>Time clock.</returns>
-    Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue);
+    Task<TimeClock?> GetTimeClockAsync(string email, DateTime requestValue);
 
     /// <summary>
     /// Get times clock by date.

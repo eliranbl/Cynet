@@ -1,66 +1,127 @@
-﻿using Cynet.Domain.Employees;
+﻿using Cynet.Common.Paging;
+using Cynet.Domain.Employees;
+using Cynet.Domain.TimeClocks;
 using FluentAssertions;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using System;
 using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Cynet.Domain.TimeClocks;
 
 namespace Cynet.Tests;
 
 [TestFixture]
 public class TimeClocksControllerTests : ControllerTestsBase
 {
-    private const string _timeClocksBaseURL = "/v1/TimesClock";
-    private const string _employeesBaseURL = "/v1/Employees";
-
 
     [Test]
-    public async Task CanInsertEnterToTimeClock()
+    public async Task CanEnterToOfficeTimeClockAsync()
     {
-        var createEmployeeRequest = new CreateEmployeeRequest
-        {
-            Email = $"{Guid.NewGuid()}@test.com",
-            FirstName = "First name Test",
-            LastName = "Last name test"
-        };
+        var email = await CreateEmployee();
 
-        await HttpClient.PostAsJsonAsync(_employeesBaseURL, createEmployeeRequest);
-
-        var request = new TimeClockRequest
-        {
-            Value = DateTime.UtcNow,
-            EmployeeEmail = createEmployeeRequest.Email,
-            TimeClockType = TimeClockType.Enter
-        };
+        var request = TimeClockRequest(email, TimeClockType.Enter, DateTime.UtcNow);
 
         var response = await HttpClient.PostAsJsonAsync(_timeClocksBaseURL, request);
-        var responseContentString = await response.Content.ReadAsStringAsync();
 
-        var viewModel = JsonConvert.DeserializeObject<TimeClockResponse>(responseContentString);
+        var viewModel = await DeserializeObject<TimeClockResponse>(response);
 
-        viewModel.Employee.Email.Equals(createEmployeeRequest.Email);
+        viewModel.Employee.Email.Equals(email);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+    }
+
+    [Test]
+    public async Task CanLeaveOfficeTimeClockAsync()
+    {
+        var email = await CreateEmployee();
+
+        var requestEnter = TimeClockRequest(email, TimeClockType.Enter, DateTime.UtcNow);
+        await HttpClient.PostAsJsonAsync(_timeClocksBaseURL, requestEnter);
+
+        var requestLeave = TimeClockRequest(email, TimeClockType.Leave, DateTime.UtcNow.AddHours(1));
+
+        var response = await HttpClient.PostAsJsonAsync(_timeClocksBaseURL, requestLeave);
+
+        var viewModel = await DeserializeObject<TimeClockResponse>(response);
+
+        viewModel.Employee.Email.Equals(email);
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Test]
-    public async Task CreateNewEmployee()
+    public async Task CanUpdateTimeClockAsync()
     {
-        var request = new CreateEmployeeRequest
+        var email = await CreateEmployee();
+
+        var timeClockRequest = TimeClockRequest(email, TimeClockType.Enter, DateTime.UtcNow);
+        var enterResponse = await HttpClient.PostAsJsonAsync(_timeClocksBaseURL, timeClockRequest);
+
+        var viewModel = await DeserializeObject<TimeClockResponse>(enterResponse);
+
+        var updateRequest = new UpdateTimeClockRequest
+        {
+            EnterTime = "12:05",
+            LeaveTime = "13:04",
+        };
+
+        var response = await HttpClient.PutAsJsonAsync($"{_timeClocksBaseURL}/{viewModel.Id}/UpdateAsync", updateRequest);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Test]
+    public async Task CanGetQueryAsync()
+    {
+        var email = await CreateEmployee();
+        var timeClockRequest = TimeClockRequest(email, TimeClockType.Enter, DateTime.UtcNow);
+        await HttpClient.PostAsJsonAsync(_timeClocksBaseURL, timeClockRequest);
+
+        var query = new TimeClockQuery
+        {
+            Email = email,
+            PageNo = 1,
+            PageSize = 10
+        };
+        var url =
+            $"{_timeClocksBaseURL}" +
+            $"?Email={email}" +
+            $"&PageNo={query.PageNo}" +
+            $"&PageSize={query.PageSize}";
+
+        var queryResponse = await HttpClient.GetAsync(url);
+
+        var viewModel = await DeserializeObject<Page<TimeClockResponse>>(queryResponse);
+
+        viewModel.Items.Should().NotBeNullOrEmpty();
+        viewModel.PageSize.Should().Be(query.PageSize);
+    }
+
+    private async Task<string> CreateEmployee()
+    {
+        var employeeRequest = new CreateEmployeeRequest
         {
             Email = $"{Guid.NewGuid()}@test.com",
             FirstName = "First name Test",
             LastName = "Last name test"
         };
 
-        var response = await HttpClient.PostAsJsonAsync(_employeesBaseURL, request);
-        var responseContentString = await response.Content.ReadAsStringAsync();
+        var response = await HttpClient.PostAsJsonAsync(_employeesBaseURL, employeeRequest);
 
-        var viewModel = JsonConvert.DeserializeObject<Guid>(responseContentString);
+        var viewModel = await DeserializeObject<Guid>(response);
 
         viewModel.Should().NotBeEmpty();
         response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        return employeeRequest.Email;
+    }
+
+    private TimeClockRequest TimeClockRequest(string email, TimeClockType type, DateTime date)
+    {
+        return new TimeClockRequest
+        {
+            Value = date,
+            Email = email,
+            TimeClockType = type
+        };
     }
 }

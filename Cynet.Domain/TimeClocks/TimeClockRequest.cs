@@ -1,4 +1,6 @@
-﻿namespace Cynet.Domain.TimeClocks;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Cynet.Domain.TimeClocks;
 
 /// <summary>
 /// Time clock request.
@@ -6,9 +8,10 @@
 public class TimeClockRequest
 {
     /// <summary>
-    /// Employee email.
+    /// Email.
     /// </summary>
-    public string EmployeeEmail { get; set; }
+    [EmailAddress(ErrorMessage = "Email is not valid")]
+    public string Email { get; set; }
 
     /// <summary>
     /// Time Clock type.

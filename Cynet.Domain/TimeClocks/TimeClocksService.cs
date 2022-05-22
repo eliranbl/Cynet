@@ -32,14 +32,14 @@ public class TimeClocksService : ITimeClocksService
     {
         TimeClock timeClockResult;
 
-        var timeClock = await _clocksRepository.GetTimeClockAsync(request.EmployeeEmail, request.Value);
+        var timeClock = await _clocksRepository.GetTimeClockAsync(request.Email, request.Value);
 
         if (request.TimeClockType == TimeClockType.Enter)
         {
             if (timeClock is not null)
             {
-                var valur = request.Value.ToShortTimeString(); ;
-                timeClock.EnterTime = valur;
+                var value = request.Value.ToShortTimeString(); ;
+                timeClock.EnterTime = value;
                 timeClockResult = await UpdateTimeClockAsync(timeClock);
             }
             else
@@ -74,7 +74,7 @@ public class TimeClocksService : ITimeClocksService
     /// <param name="id">Identifier.</param>
     /// <param name="request">Update time clock request.</param>
     /// <returns>Time clock response.</returns>
-    public async Task<TimeClockResponse> UpdateTimeClockAsync(Guid id, UpdateTimeClock request)
+    public async Task<TimeClockResponse> UpdateTimeClockAsync(Guid id, UpdateTimeClockRequest request)
     {
         var timeClock = await _clocksRepository.GetTimeClockAsync(id);
 
@@ -106,12 +106,12 @@ public class TimeClocksService : ITimeClocksService
     /// <summary>
     /// Get time clock.
     /// </summary>
-    /// <param name="employeeEmail">Employee email.</param>
+    /// <param name="email">Email.</param>
     /// <param name="requestValue">Request value.</param>
     /// <returns>Time clock.</returns>
-    public async Task<TimeClock?> GetTimeClockAsync(string employeeEmail, DateTime requestValue)
+    public async Task<TimeClock?> GetTimeClockAsync(string email, DateTime requestValue)
     {
-        return await _clocksRepository.GetTimeClockAsync(employeeEmail, requestValue);
+        return await _clocksRepository.GetTimeClockAsync(email, requestValue);
     }
 
     /// <summary>

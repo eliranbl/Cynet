@@ -1,4 +1,6 @@
-﻿namespace Cynet.Domain.Employees;
+﻿using Cynet.Domain.Quarantines;
+
+namespace Cynet.Domain.Employees;
 
 /// <summary>
 /// Employee response.
@@ -24,4 +26,9 @@ public  class EmployeesResponse
     /// Email.
     /// </summary>
     public string Email { get; set; }
+
+    /// <summary>
+    /// Quarantine.
+    /// </summary>
+    public IEnumerable<QuarantineResponse>? Quarantine { get; set; }
 }

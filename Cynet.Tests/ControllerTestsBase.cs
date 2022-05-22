@@ -1,4 +1,4 @@
-using Cynet.EF;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,14 +9,16 @@ namespace Cynet.Tests;
 public abstract class ControllerTestsBase
 {
     protected HttpClient HttpClient;
-    protected CynetDbContext DBContext;
+
+    private const string version = "/v1";
+    protected const string _employeesBaseURL = $"{version}/Employees";
+    protected const string _timeClocksBaseURL = $"{version}/TimesClock";
+    protected const string _quarantinesBaseURL = $"{version}/Quarantines";
 
     [SetUp]
     public virtual async Task SetUpAsync()
     {
         HttpClient = Config.HttpClient;
-        DBContext = Config.DBContext;
-
         await ClearDataAsync();
     }
 
@@ -26,8 +28,15 @@ public abstract class ControllerTestsBase
         await ClearDataAsync();
     }
 
-    protected virtual Task ClearDataAsync()
+    private Task ClearDataAsync()
     {
         return Task.CompletedTask;
+    }
+
+    protected static async Task<T> DeserializeObject<T>(HttpResponseMessage httpResponse)
+    {
+        var responseContentString = await httpResponse.Content.ReadAsStringAsync();
+
+        return JsonConvert.DeserializeObject<T>(responseContentString);
     }
 }

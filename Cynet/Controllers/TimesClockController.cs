@@ -43,14 +43,14 @@ public class TimesClockController : ControllerBase
         if (!Enum.IsDefined(typeof(TimeClockType), request.TimeClockType))
             return BadRequest("Your clock type is undefined");
 
-        var employee = await _employeesService.GetEmployeeIdAsync(request.EmployeeEmail);
+        var employee = await _employeesService.GetEmployeeIdAsync(request.Email);
 
         if (employee != null && employee.Value == Guid.Empty)
             return NotFound("Employee not found");
 
         if (request.TimeClockType == TimeClockType.Leave)
         {
-            var timeClock = await _timeClocksService.GetTimeClockAsync(request.EmployeeEmail, request.Value);
+            var timeClock = await _timeClocksService.GetTimeClockAsync(request.Email, request.Value);
 
             if (timeClock is null)
                 return BadRequest("You need to enter before you leave");
@@ -76,7 +76,7 @@ public class TimesClockController : ControllerBase
     }
 
     [HttpPut("{id}/UpdateAsync")]
-    public async Task<IActionResult> UpdateTimeClockAsync([FromRoute] Guid id, [FromBody] UpdateTimeClock request)
+    public async Task<IActionResult> UpdateTimeClockAsync([FromRoute] Guid id, [FromBody] UpdateTimeClockRequest request)
     {
         var timeClock = await _timeClocksService.GetTimeClockByIdAsync(id);
         if (timeClock == null)

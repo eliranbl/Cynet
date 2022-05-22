@@ -29,7 +29,6 @@ public class QuarantinesService : IQuarantinesService
         _emailsService = emailsService;
     }
 
-
     public async Task DeclarePositiveAsync(QuarantineRequest request)
     {
         var result = await _timeClocksService.GetAllTimesClockByDate(request.FromDate);
@@ -44,16 +43,22 @@ public class QuarantinesService : IQuarantinesService
                 FromDate = request.FromDate,
                 UntilDate = request.FromDate.AddDays(-7)
             });
-            
-            quarantines.Add(new Quarantine
+
+            var quarantine = new Quarantine
             {
                 Id = Guid.NewGuid(),
                 EmployeeId = item.EmployeeId,
                 FromDate = request.FromDate,
                 UntilDate = request.FromDate.AddDays(7),
                 CreateTime = DateTime.UtcNow,
+                IsReporter = false,
                 SentEmail = emailSent
-            });
+            };
+
+            if (request.Email.Equals(item.Employee.Email))
+                quarantine.IsReporter = true;
+
+            quarantines.Add(quarantine);
         }
 
         await _quarantinesRepository.AddQuarantineRangeAsync(quarantines);

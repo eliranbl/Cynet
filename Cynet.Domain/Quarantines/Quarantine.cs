@@ -33,6 +33,11 @@ public class Quarantine : DomainBase
     public bool SentEmail { get; set; }
 
     /// <summary>
+    /// Id reporter.
+    /// </summary>
+    public bool IsReporter { get; set; }
+
+    /// <summary>
     /// Employee.
     /// </summary>
     public virtual Employee Employee { get; set; }
