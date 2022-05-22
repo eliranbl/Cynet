@@ -18,10 +18,10 @@ public class CynetAutoMapperProfile : Profile
         CreateCommonMaps();
         CreateEmployeesMaps();
         CreateTimesClockMaps();
-        CreatQuarantinsMaps();
+        CreateQuarantinsMaps();
     }
 
-    private void CreatQuarantinsMaps()
+    private void CreateQuarantinsMaps()
     {
         CreateMap<Quarantine, QuarantineResponse>();
     }
@@ -35,7 +35,7 @@ public class CynetAutoMapperProfile : Profile
 
     private void CreateEmployeesMaps()
     {
-        CreateMap<Employee, EmployeesResponse>().ForMember(x=>x.Quarantine,o=>o.MapFrom(x=>x.Quarantines.Take(1)));   
+        CreateMap<Employee, EmployeesResponse>();
         CreateMap<CreateEmployeeRequest, Employee>();
     }
 

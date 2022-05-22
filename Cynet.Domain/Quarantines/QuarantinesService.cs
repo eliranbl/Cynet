@@ -37,6 +37,11 @@ public class QuarantinesService : IQuarantinesService
 
         foreach (var item in result)
         {
+            var quarantinesResponses = item.Employee?.Quarantine
+                .Where(x => x.SentEmail).ToList();
+
+            if (quarantinesResponses is not { Count: 0 }) continue;
+
             var emailSent = await _emailsService.SendEmailAsync(new SendQuarantineEmailRequest
             {
                 Email = item.Employee.Email,

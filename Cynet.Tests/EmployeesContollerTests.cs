@@ -11,8 +11,6 @@ namespace Cynet.Tests;
 [TestFixture]
 public class EmployeesControllerTests : ControllerTestsBase
 {
-    private const string _employeesBaseURL = "/v1/Employees";
-
     [Test]
     public async Task CreateEmployee()
     {
