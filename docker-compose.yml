@@ -1,0 +1,30 @@
+version: '3.5'
+
+networks:
+  localdev:
+    name: localdev
+    
+services:
+  main-api:
+    build: eliranbl/cynet:latest
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db-server
+    environment:
+        - ConnectionString__DefaultConnection=db-server,1400;Database=Cynet;User Id=sa;Password=P@$$w0rd;
+    networks:
+      - localdev
+        
+  db-server:
+    image: microsoft/mssql-server-linux:2017-latest
+    container_name: db-server
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@$$w0rd
+      - MSSQL_TCP_PORT=1433
+    ports:
+      - "1400:1433"
+    networks:
+      - localdev
